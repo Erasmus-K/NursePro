@@ -21,58 +21,112 @@ body {
   justify-content: space-between;
   align-items: center;
 }
-
 /* ========================
-   Navbar
+   Navbar Layout
 ======================== */
 .navbar {
+  width: 100%;
+  background: #000;   /* black navbar */
+  padding: 15px 0;
   position: fixed;
   top: 0;
-  width: 100%;
-  background: rgba(0,0,0,0.7);
-  color: #fff;
-  padding: 15px 40px;
+  left: 0;
   z-index: 1000;
 }
 
-.navbar .logo {
-  font-weight: bold;
-  font-size: 1.5rem;
+.navbar .container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
+/* Logo */
+.navbar .logo {
+  color: #fff;
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+/* Nav links */
 .nav-links ul {
   display: flex;
-  gap: 25px;
+  list-style: none;
+  gap: 20px;
 }
 
-.nav-links a {
-  color: #fff;
-  text-decoration: none;
-  font-weight: 500;
+.nav-links ul li {
   position: relative;
 }
 
-.nav-links a::after {
-  content: "";
-  position: absolute;
-  width: 0;
-  height: 2px;
-  bottom: -5px;
-  left: 0;
-  background: #00f2fe;
-  transition: width 0.3s ease;
+.nav-links ul li a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 1rem;
+  padding: 5px 10px;
+  transition: color 0.3s ease;
 }
 
-.nav-links a:hover::after {
+.nav-links ul li a:hover {
+  color: #00f2fe;
+}
+
+/* Dropdown menu */
+.nav-links ul li .dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: rgba(0,0,0,0.9);
+  min-width: 180px;
+  border-radius: 6px;
+  padding: 10px 0;
+  z-index: 999;
+}
+
+.nav-links ul li .dropdown li {
   width: 100%;
 }
 
-/* Hamburger (mobile) */
+.nav-links ul li .dropdown a {
+  display: block;
+  padding: 10px 20px;
+  color: #fff;
+  font-size: 0.95rem;
+  transition: background 0.3s ease;
+}
+
+.nav-links ul li .dropdown a:hover {
+  background: #00f2fe;
+  color: #000;
+}
+
+/* Desktop hover */
+.nav-links ul li:hover > .dropdown {
+  display: block;
+}
+
+/* Mobile nav toggle */
+.nav-links.active {
+  display: block;
+}
+
+/* Mobile dropdown toggle */
+.nav-links ul li .dropdown.show {
+  display: block;
+}
+
+/* Hamburger menu */
 .hamburger {
   display: none;
   flex-direction: column;
   gap: 5px;
   cursor: pointer;
+  background: none;
+  border: none;
 }
 
 .hamburger span {
@@ -81,6 +135,36 @@ body {
   background: #fff;
   border-radius: 5px;
 }
+
+/* Mobile layout */
+@media (max-width: 768px) {
+  .nav-links {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    width: 200px;
+    background: rgba(0,0,0,0.95);
+    border-radius: 6px;
+    padding: 20px;
+  }
+
+  .nav-links ul {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .nav-links ul li .dropdown {
+    position: static;
+    background: rgba(0,0,0,0.85);
+    margin-left: 15px;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+}
+
 
 /* ========================
    Hero Section
