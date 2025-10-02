@@ -166,6 +166,22 @@ body {
 }
 
 
+/* Ensure dropdown shows on mobile when toggled */
+.nav-links ul li .dropdown.show {
+  display: block;
+}
+
+/* Prevent dropdown from hiding behind other content */
+.nav-links .dropdown {
+  z-index: 9999;
+}
+
+/* Optional: pointer cursor for items with dropdown */
+.nav-links ul li > a {
+  cursor: pointer;
+}
+
+
 /* ========================
    Hero Section
 ======================== */
