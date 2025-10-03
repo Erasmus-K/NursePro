@@ -134,6 +134,7 @@ body {
   height: 3px;
   background: #fff;
   border-radius: 5px;
+  transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
 /* Mobile layout */
@@ -152,6 +153,12 @@ body {
   .nav-links ul {
     flex-direction: column;
     gap: 15px;
+    display: none; /* hidden until hamburger toggles */
+  }
+
+  /* show menu list when nav is active */
+  .nav-links.active ul {
+    display: flex;
   }
 
   .nav-links ul li .dropdown {
@@ -179,6 +186,19 @@ body {
 /* Optional: pointer cursor for items with dropdown */
 .nav-links ul li > a {
   cursor: pointer;
+}
+
+/* Hamburger to X animation */
+.hamburger.active span:nth-child(1) {
+  transform: translateY(8px) rotate(45deg);
+}
+
+.hamburger.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger.active span:nth-child(3) {
+  transform: translateY(-8px) rotate(-45deg);
 }
 
 
