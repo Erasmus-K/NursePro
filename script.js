@@ -41,3 +41,44 @@ dropdownParents.forEach((parent) => {
     });
   }
 });
+
+
+const slides = document.querySelectorAll(".blog-slide");
+  const dotsContainer = document.querySelector(".slider-dots");
+
+  let currentIndex = 0;
+
+  // Create dots based on number of slides
+  slides.forEach((_, index) => {
+    const dot = document.createElement("div");
+    dot.classList.add("dot");
+    if(index === 0) dot.classList.add("active");
+    dot.addEventListener("click", () => {
+      goToSlide(index);
+      resetAutoSlide();
+    });
+    dotsContainer.appendChild(dot);
+  });
+
+  const dots = document.querySelectorAll(".dot");
+
+  function goToSlide(index){
+    slides.forEach((slide, i) => {
+      slide.classList.toggle("active", i === index);
+      dots[i].classList.toggle("active", i === index);
+    });
+    currentIndex = index;
+  }
+
+  // Auto slide every 5 seconds
+  let slideInterval = setInterval(nextSlide, 5000);
+
+  function nextSlide(){
+    let nextIndex = (currentIndex + 1) % slides.length;
+    goToSlide(nextIndex);
+  }
+
+  function resetAutoSlide(){
+    clearInterval(slideInterval);
+    slideInterval = setInterval(nextSlide, 5000);
+  }

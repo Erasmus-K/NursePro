@@ -419,16 +419,26 @@ section {
   max-width: 1000px;
   margin: auto;
   position: relative;
+  overflow: hidden; /* hides extra slides */
 }
 
 .blog-slide {
-  display: none;
+  display: flex;
   justify-content: center;
   gap: 20px;
+  opacity: 0;
+  transform: translateX(100%);
+  transition: all 0.5s ease;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
 }
 
 .blog-slide.active {
-  display: flex;
+  opacity: 1;
+  transform: translateX(0);
+  position: relative;
 }
 
 .blog-card {
@@ -437,7 +447,7 @@ section {
   overflow: hidden;
   box-shadow: 0 5px 15px rgba(0,0,0,0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  width: 300px;
+  width: 350px; /* slightly larger */
 }
 
 .blog-card:hover {
@@ -447,7 +457,7 @@ section {
 
 .blog-card img {
   width: 100%;
-  height: 220px;
+  height: 260px; /* slightly taller */
   object-fit: cover;
 }
 
@@ -457,12 +467,12 @@ section {
 }
 
 .blog-info h3 {
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   margin-bottom: 10px;
 }
 
 .blog-info p {
-  font-size: 0.95rem;
+  font-size: 1rem;
   color: #555;
 }
 
