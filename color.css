@@ -12,6 +12,25 @@ body {
   line-height: 1.6;
   background: #f8f9fc;
   color: #222;
+  overflow-x: hidden;
+}
+
+/* Image optimization */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  image-rendering: -webkit-optimize-contrast;
+}
+
+/* Lazy loading optimization */
+img[loading="lazy"] {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+img[loading="lazy"].loaded {
+  opacity: 1;
 }
 
 .container {
@@ -208,12 +227,14 @@ body {
 .hero {
   height: 100vh;
   background: url("image/home.jpg") center/cover no-repeat;
+  background-attachment: scroll;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
   color: #fff;
   position: relative;
+  will-change: transform;
 }
 
 .hero .overlay {

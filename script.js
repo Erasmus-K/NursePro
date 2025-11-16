@@ -1,3 +1,13 @@
+// Navbar scroll effect
+window.addEventListener('scroll', () => {
+  const navbar = document.querySelector('.navbar');
+  if (window.scrollY > 50) {
+    navbar.classList.add('scrolled');
+  } else {
+    navbar.classList.remove('scrolled');
+  }
+});
+
 // Hamburger toggle for mobile
 const hamburger = document.querySelector(".hamburger");
 const navLinks = document.querySelector(".nav-links");
@@ -28,7 +38,6 @@ dropdownParents.forEach((parent) => {
         target.nextElementSibling === dropdown
       ) {
         e.preventDefault();
-        // Close other open dropdowns on mobile for a cleaner experience
         if (window.matchMedia("(max-width: 768px)").matches) {
           parent.parentElement
             .querySelectorAll(".dropdown.show")
@@ -42,43 +51,147 @@ dropdownParents.forEach((parent) => {
   }
 });
 
+// Blog Slider
+let currentSlide = 0;
+const slides = document.querySelectorAll('.blog-slide');
+const totalSlides = slides.length;
 
-const slides = document.querySelectorAll(".blog-slide");
-  const dotsContainer = document.querySelector(".slider-dots");
+function showSlide(index) {
+  slides.forEach(slide => slide.classList.remove('active'));
+  slides[index].classList.add('active');
+  updateDots();
+}
 
-  let currentIndex = 0;
+function nextSlide() {
+  currentSlide = (currentSlide + 1) % totalSlides;
+  showSlide(currentSlide);
+}
 
-  // Create dots based on number of slides
-  slides.forEach((_, index) => {
-    const dot = document.createElement("div");
-    dot.classList.add("dot");
-    if(index === 0) dot.classList.add("active");
-    dot.addEventListener("click", () => {
-      goToSlide(index);
-      resetAutoSlide();
-    });
-    dotsContainer.appendChild(dot);
+function prevSlide() {
+  currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+  showSlide(currentSlide);
+}
+
+// Blog slider controls
+document.querySelector('.next-btn')?.addEventListener('click', nextSlide);
+document.querySelector('.prev-btn')?.addEventListener('click', prevSlide);
+
+// Create and handle dots
+function createDots() {
+  const dotsContainer = document.querySelector('.slider-dots');
+  if (dotsContainer) {
+    for (let i = 0; i < totalSlides; i++) {
+      const dot = document.createElement('span');
+      dot.classList.add('dot');
+      if (i === 0) dot.classList.add('active');
+      dot.addEventListener('click', () => {
+        currentSlide = i;
+        showSlide(currentSlide);
+      });
+      dotsContainer.appendChild(dot);
+    }
+  }
+}
+
+function updateDots() {
+  const dots = document.querySelectorAll('.dot');
+  dots.forEach((dot, index) => {
+    dot.classList.toggle('active', index === currentSlide);
   });
+}
 
-  const dots = document.querySelectorAll(".dot");
+// Testimonials auto-slider
+let testimonialIndex = 0;
+const testimonialCards = document.querySelectorAll('.testimonial-card');
 
-  function goToSlide(index){
-    slides.forEach((slide, i) => {
-      slide.classList.toggle("active", i === index);
-      dots[i].classList.toggle("active", i === index);
+function rotateTestimonials() {
+  if (testimonialCards.length > 0) {
+    testimonialCards.forEach(card => card.style.opacity = '0.7');
+    testimonialCards[testimonialIndex].style.opacity = '1';
+    testimonialIndex = (testimonialIndex + 1) % testimonialCards.length;
+  }
+}
+
+// Stats counter animation
+function animateCounters() {
+  const counters = document.querySelectorAll('.stat-card h3');
+  counters.forEach(counter => {
+    const target = parseInt(counter.textContent.replace(/[^0-9]/g, ''));
+    let current = 0;
+    const increment = target / 100;
+    const timer = setInterval(() => {
+      current += increment;
+      if (current >= target) {
+        counter.textContent = counter.textContent.replace(/[0-9,]+/, target.toLocaleString());
+        clearInterval(timer);
+      } else {
+        counter.textContent = counter.textContent.replace(/[0-9,]+/, Math.floor(current).toLocaleString());
+      }
+    }, 20);
+  });
+}
+
+// Image loading optimization
+function optimizeImages() {
+  const images = document.querySelectorAll('img[loading="lazy"]');
+  
+  const imageObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const img = entry.target;
+        img.onload = () => img.classList.add('loaded');
+        if (img.complete) img.classList.add('loaded');
+        imageObserver.unobserve(img);
+      }
     });
-    currentIndex = index;
-  }
+  });
+  
+  images.forEach(img => imageObserver.observe(img));
+}
 
-  // Auto slide every 5 seconds
-  let slideInterval = setInterval(nextSlide, 5000);
+// Smooth scrolling for navigation links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function (e) {
+    e.preventDefault();
+    const target = document.querySelector(this.getAttribute('href'));
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth' });
+    }
+  });
+});
 
-  function nextSlide(){
-    let nextIndex = (currentIndex + 1) % slides.length;
-    goToSlide(nextIndex);
-  }
-
-  function resetAutoSlide(){
-    clearInterval(slideInterval);
-    slideInterval = setInterval(nextSlide, 5000);
-  }
+// Initialize everything when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+  createDots();
+  optimizeImages();
+  
+  // Start testimonial rotation
+  setInterval(rotateTestimonials, 5000);
+  
+  // Intersection Observer for animations
+  const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+  };
+  
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.animationDelay = '0.2s';
+        entry.target.classList.add('fade-in');
+        
+        // Animate counters for stats section
+        if (entry.target.classList.contains('stats-section')) {
+          setTimeout(animateCounters, 300);
+        }
+        
+        observer.unobserve(entry.target);
+      }
+    });
+  }, observerOptions);
+  
+  // Observe all sections with fade-in class
+  document.querySelectorAll('.fade-in').forEach(section => {
+    observer.observe(section);
+  });
+});
