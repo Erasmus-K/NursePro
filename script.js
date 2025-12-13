@@ -160,33 +160,66 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   });
 });
 
-// Q&A Functionality
-let qaData = {
+// Q&A Data Structure
+const qaData = {
   questions: [
     {
       id: 1,
-      question: "How long does it take to complete an assignment?",
-      answer: "Typically 2-5 days depending on complexity and urgency.",
-      date: "2025-01-15"
+      questionText: "How long does it take to complete a nursing assignment?",
+      answerText: "Typically 2-5 days depending on complexity, length, and urgency level.",
+      username: "Sarah_RN",
+      date: "2025-01-15",
+      approved: true
     },
     {
       id: 2,
-      question: "Do you help with nursing exams?",
-      answer: "Yes, we provide comprehensive exam preparation and support.",
-      date: "2025-01-14"
+      questionText: "Do you help with NCLEX exam preparation?",
+      answerText: "Yes, we provide comprehensive NCLEX prep including practice questions and study guides.",
+      username: "Mike_Student",
+      date: "2025-01-14",
+      approved: true
+    },
+    {
+      id: 3,
+      questionText: "What's your refund policy?",
+      answerText: "We offer full refunds if you're not satisfied with our service quality.",
+      username: "Jennifer_K",
+      date: "2025-01-13",
+      approved: true
     }
-  ]
+  ],
+
+  getApprovedQuestions() {
+    return this.questions.filter(q => q.approved);
+  },
+
+  addQuestion(questionText, username = 'Anonymous') {
+    const newQuestion = {
+      id: this.questions.length + 1,
+      questionText: questionText,
+      answerText: "Thank you for your question! We'll respond soon.",
+      username: username,
+      date: new Date().toISOString().split('T')[0],
+      approved: false
+    };
+    this.questions.push(newQuestion);
+    return newQuestion;
+  }
 };
 
 function loadQuestions() {
   const container = document.getElementById('questionsContainer');
   if (!container) return;
   
-  container.innerHTML = qaData.questions.map(q => `
+  const approvedQuestions = qaData.getApprovedQuestions();
+  container.innerHTML = approvedQuestions.map(q => `
     <div class="question-item" onclick="toggleAnswer(${q.id})">
-      <div class="question-text">${q.question}</div>
-      <div class="answer-text" id="answer-${q.id}">${q.answer}</div>
-      <div class="question-date">${q.date}</div>
+      <div class="question-text">${q.questionText}</div>
+      <div class="answer-text" id="answer-${q.id}">${q.answerText}</div>
+      <div class="question-meta">
+        <span class="username">Asked by: ${q.username}</span>
+        <span class="question-date">${q.date}</span>
+      </div>
     </div>
   `).join('');
 }
@@ -196,14 +229,8 @@ function toggleAnswer(id) {
   questionItem.classList.toggle('active');
 }
 
-function addQuestion(question) {
-  const newId = qaData.questions.length + 1;
-  qaData.questions.unshift({
-    id: newId,
-    question: question,
-    answer: "Thank you for your question! We'll respond soon.",
-    date: new Date().toISOString().split('T')[0]
-  });
+function addQuestion(questionText, username = 'Anonymous') {
+  qaData.addQuestion(questionText, username);
   loadQuestions();
 }
 
@@ -218,10 +245,14 @@ document.addEventListener('DOMContentLoaded', () => {
   if (questionForm) {
     questionForm.addEventListener('submit', (e) => {
       e.preventDefault();
-      const input = document.getElementById('questionInput');
-      if (input.value.trim()) {
-        addQuestion(input.value.trim());
-        input.value = '';
+      const questionInput = document.getElementById('questionInput');
+      const usernameInput = document.getElementById('usernameInput');
+      
+      if (questionInput.value.trim()) {
+        const username = usernameInput.value.trim() || 'Anonymous';
+        addQuestion(questionInput.value.trim(), username);
+        questionInput.value = '';
+        usernameInput.value = '';
         alert('Question submitted! We\'ll respond soon.');
       }
     });

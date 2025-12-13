@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reviews Admin Panel</title>
+  <link rel="stylesheet" href="admin-style.css">
+</head>
+<body>
+  <div class="admin-container">
+    <h1>Reviews Admin Panel</h1>
+    
+    <div class="stats">
+      <div class="stat-box">
+        <span id="pendingReviewsCount">0</span>
+        <label>Pending Reviews</label>
+      </div>
+      <div class="stat-box">
+        <span id="approvedReviewsCount">0</span>
+        <label>Approved Reviews</label>
+      </div>
+      <div class="stat-box">
+        <span id="avgRatingAdmin">0.0</span>
+        <label>Average Rating</label>
+      </div>
+    </div>
+
+    <div class="pending-reviews">
+      <h2>Pending Reviews</h2>
+      <div id="pendingReviewsList"></div>
+    </div>
+
+    <div class="approved-reviews">
+      <h2>Approved Reviews</h2>
+      <div id="approvedReviewsList"></div>
+    </div>
+  </div>
+
+  <script src="reviews-system.js"></script>
+  <script src="reviews-admin.js"></script>
+</body>
+</html>

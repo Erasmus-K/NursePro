@@ -29,6 +29,7 @@
           </ul>
         </li>
         <li><a href="#testimonials">Testimonials</a></li>
+        <li><a href="#reviews">Reviews</a></li>
         <li><a href="#blogs">Insights</a></li>
         <li><a href="#qa">Q&A</a></li>
         <li><a href="#contact">Contact</a></li>
@@ -238,6 +239,61 @@ Quick tips, reminders, and encouragement — stay consistent and productive.</p>
   <div class="slider-dots"></div>
 </section>
 
+  <!-- Reviews Section -->
+  <section id="reviews" class="reviews-section fade-in">
+    <h2>⭐ Customer Reviews</h2>
+    
+    <!-- Reviews Summary -->
+    <div class="reviews-summary">
+      <div class="average-rating">
+        <div class="rating-display">
+          <span class="avg-score" id="avgRating">0.0</span>
+          <div class="stars-display" id="avgStars"></div>
+        </div>
+        <p><span id="totalReviews">0</span> reviews</p>
+      </div>
+      
+      <div class="sort-controls">
+        <label>Sort by:</label>
+        <select id="sortSelect">
+          <option value="latest">Latest</option>
+          <option value="highest">Highest Rating</option>
+          <option value="lowest">Lowest Rating</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Submit Review Form -->
+    <div class="submit-review">
+      <h3>Write a Review</h3>
+      <form id="reviewForm">
+        <input type="text" id="reviewerName" placeholder="Your name (optional)" maxlength="30">
+        
+        <div class="rating-input">
+          <label>Rating:</label>
+          <div class="star-rating" id="starRating">
+            <span class="star" data-rating="1">★</span>
+            <span class="star" data-rating="2">★</span>
+            <span class="star" data-rating="3">★</span>
+            <span class="star" data-rating="4">★</span>
+            <span class="star" data-rating="5">★</span>
+          </div>
+          <input type="hidden" id="ratingValue" required>
+        </div>
+        
+        <textarea id="reviewComment" placeholder="Share your experience..." required maxlength="500"></textarea>
+        
+        <button type="submit">Submit Review</button>
+      </form>
+    </div>
+
+    <!-- Reviews Display -->
+    <div class="reviews-display">
+      <h3>Customer Feedback</h3>
+      <div id="reviewsList"></div>
+    </div>
+  </section>
+
   <!-- Q&A Section -->
   <section id="qa" class="qa-section fade-in">
     <h2>❓ Frequently Asked Questions</h2>
@@ -245,6 +301,7 @@ Quick tips, reminders, and encouragement — stay consistent and productive.</p>
       <div class="ask-question">
         <h3>Ask a Question</h3>
         <form id="questionForm">
+          <input type="text" id="usernameInput" placeholder="Your name (optional)" maxlength="20">
           <input type="text" id="questionInput" placeholder="Type your question here..." required>
           <button type="submit">Ask Question</button>
         </form>
@@ -314,6 +371,10 @@ Quick tips, reminders, and encouragement — stay consistent and productive.</p>
   <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" />
 </a>
 
+  <script src="reviews-system.js"></script>
+  <script src="reviews-main.js"></script>
+  <script src="qa-system.js"></script>
+  <script src="qa-main.js"></script>
   <script src="script.js"></script>
   
 <!--Start of Tawk.to Script-->
