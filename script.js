@@ -160,10 +160,72 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   });
 });
 
+// Q&A Functionality
+let qaData = {
+  questions: [
+    {
+      id: 1,
+      question: "How long does it take to complete an assignment?",
+      answer: "Typically 2-5 days depending on complexity and urgency.",
+      date: "2025-01-15"
+    },
+    {
+      id: 2,
+      question: "Do you help with nursing exams?",
+      answer: "Yes, we provide comprehensive exam preparation and support.",
+      date: "2025-01-14"
+    }
+  ]
+};
+
+function loadQuestions() {
+  const container = document.getElementById('questionsContainer');
+  if (!container) return;
+  
+  container.innerHTML = qaData.questions.map(q => `
+    <div class="question-item" onclick="toggleAnswer(${q.id})">
+      <div class="question-text">${q.question}</div>
+      <div class="answer-text" id="answer-${q.id}">${q.answer}</div>
+      <div class="question-date">${q.date}</div>
+    </div>
+  `).join('');
+}
+
+function toggleAnswer(id) {
+  const questionItem = document.querySelector(`#answer-${id}`).parentElement;
+  questionItem.classList.toggle('active');
+}
+
+function addQuestion(question) {
+  const newId = qaData.questions.length + 1;
+  qaData.questions.unshift({
+    id: newId,
+    question: question,
+    answer: "Thank you for your question! We'll respond soon.",
+    date: new Date().toISOString().split('T')[0]
+  });
+  loadQuestions();
+}
+
 // Initialize everything when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
   createDots();
   optimizeImages();
+  loadQuestions();
+  
+  // Q&A form handler
+  const questionForm = document.getElementById('questionForm');
+  if (questionForm) {
+    questionForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const input = document.getElementById('questionInput');
+      if (input.value.trim()) {
+        addQuestion(input.value.trim());
+        input.value = '';
+        alert('Question submitted! We\'ll respond soon.');
+      }
+    });
+  }
   
   // Start testimonial rotation
   setInterval(rotateTestimonials, 5000);

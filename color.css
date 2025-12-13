@@ -997,6 +997,95 @@ body {
   color: #ccc;
 }
 
+/* Q&A Section */
+.qa-section {
+  padding: 60px 20px;
+  background: #f8f9fc;
+}
+
+.qa-container {
+  max-width: 800px;
+  margin: 0 auto;
+  display: grid;
+  gap: 40px;
+}
+
+.ask-question {
+  background: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+#questionForm {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+#questionInput {
+  flex: 1;
+  padding: 12px;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+#questionForm button {
+  padding: 12px 24px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+#questionForm button:hover {
+  background: #0056b3;
+}
+
+.questions-list {
+  background: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.question-item {
+  border-bottom: 1px solid #eee;
+  padding: 20px 0;
+  cursor: pointer;
+}
+
+.question-item:last-child {
+  border-bottom: none;
+}
+
+.question-text {
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.answer-text {
+  color: #666;
+  display: none;
+  padding: 10px;
+  background: #f8f9fc;
+  border-radius: 6px;
+  margin-top: 10px;
+}
+
+.question-item.active .answer-text {
+  display: block;
+}
+
+.question-date {
+  font-size: 0.8rem;
+  color: #999;
+}
+
 /* WhatsApp Floating Button */
 .whatsapp-float {
   position: fixed;

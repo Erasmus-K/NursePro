@@ -1,0 +1,18 @@
+{
+  "questions": [
+    {
+      "id": 1,
+      "question": "How long does it take to complete an assignment?",
+      "answer": "Typically 2-5 days depending on complexity and urgency.",
+      "category": "assignments",
+      "date": "2025-01-15"
+    },
+    {
+      "id": 2,
+      "question": "Do you help with nursing exams?",
+      "answer": "Yes, we provide comprehensive exam preparation and support.",
+      "category": "exams",
+      "date": "2025-01-14"
+    }
+  ]
+}
