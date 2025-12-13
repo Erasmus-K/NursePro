@@ -7,12 +7,19 @@
   box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   line-height: 1.6;
   background: #f8f9fc;
   color: #222;
   overflow-x: hidden;
+  min-height: 100vh;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
 }
 
 /* Image optimization */
@@ -163,19 +170,23 @@ img[loading="lazy"].loaded {
     position: absolute;
     top: 100%;
     right: 0;
-    width: 200px;
+    width: 250px;
     background: rgba(0,0,0,0.95);
     border-radius: 6px;
     padding: 20px;
+    backdrop-filter: blur(10px);
   }
 
   .nav-links ul {
     flex-direction: column;
     gap: 15px;
-    display: none; /* hidden until hamburger toggles */
+    display: none;
   }
 
-  /* show menu list when nav is active */
+  .nav-links.active {
+    display: block;
+  }
+
   .nav-links.active ul {
     display: flex;
   }
@@ -669,13 +680,249 @@ section {
 }
 
 /* ========================
-   Responsive
+   Responsive Design
 ======================== */
-@media (max-width: 768px) {
+
+/* Large screens (1200px+) */
+@media (min-width: 1200px) {
+  .container {
+    max-width: 1200px;
+  }
+  
+  section {
+    padding: 100px 40px;
+  }
+}
+
+/* Medium screens (768px - 1199px) */
+@media (max-width: 1199px) and (min-width: 768px) {
+  .hero h1 {
+    font-size: 2.5rem;
+  }
+  
+  .blog-card {
+    width: 300px;
+  }
+  
+  .avg-score {
+    font-size: 2.5rem;
+  }
+}
+
+/* Tablet screens (768px - 991px) */
+@media (max-width: 991px) and (min-width: 768px) {
+  .reviews-summary {
+    flex-direction: column;
+    gap: 20px;
+    text-align: center;
+  }
+  
+  .blog-slide {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .footer-columns {
+    gap: 30px;
+  }
+}
+
+/* Mobile screens (max-width: 767px) */
+@media (max-width: 767px) {
+  /* Navigation */
   .nav-links ul { display: none; }
   .hamburger { display: flex; }
-  .steps-container { flex-direction: column; }
-  .contact-links { flex-direction: column; align-items: center; }
+  
+  .navbar .container {
+    width: 95%;
+    padding: 0 10px;
+  }
+  
+  /* Hero section */
+  .hero {
+    height: 80vh;
+    padding: 20px;
+  }
+  
+  .hero h1 {
+    font-size: 2rem;
+    margin-bottom: 15px;
+  }
+  
+  .hero p {
+    font-size: 1rem;
+    margin-bottom: 20px;
+  }
+  
+  /* Sections */
+  section {
+    padding: 40px 15px;
+  }
+  
+  /* Grid layouts */
+  .mv-container,
+  .core-services-container,
+  .testimonial-container,
+  .stats-cards {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  /* Steps and support items */
+  .steps,
+  .support-items {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .step,
+  .support-item {
+    max-width: 100%;
+    width: 100%;
+  }
+  
+  /* Blog section */
+  .blog-slide {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .blog-card {
+    width: 90%;
+    max-width: 350px;
+  }
+  
+  /* Reviews section */
+  .reviews-summary {
+    flex-direction: column;
+    gap: 20px;
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .rating-display {
+    justify-content: center;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .avg-score {
+    font-size: 2rem;
+  }
+  
+  .rating-input {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  
+  .review-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  
+  .reviewer-info {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
+  
+  /* Forms */
+  #questionForm,
+  #reviewForm {
+    flex-direction: column;
+  }
+  
+  #usernameInput,
+  #questionInput,
+  #reviewerName {
+    flex: 1;
+    min-width: auto;
+  }
+  
+  /* Footer */
+  .footer-columns {
+    flex-direction: column;
+    gap: 20px;
+    text-align: center;
+  }
+  
+  .footer-column {
+    min-width: auto;
+  }
+  
+  /* Floating buttons */
+  .whatsapp-float {
+    width: 50px;
+    height: 50px;
+    bottom: 15px;
+    left: 15px;
+  }
+  
+  .whatsapp-float img {
+    width: 30px;
+    height: 30px;
+  }
+}
+
+/* Small mobile screens (max-width: 480px) */
+@media (max-width: 480px) {
+  .hero h1 {
+    font-size: 1.8rem;
+  }
+  
+  .hero p {
+    font-size: 0.9rem;
+  }
+  
+  section {
+    padding: 30px 10px;
+  }
+  
+  .submit-review,
+  .ask-question,
+  .questions-list,
+  .reviews-display {
+    padding: 20px;
+  }
+  
+  .question-item,
+  .review-item {
+    padding: 15px;
+  }
+  
+  .star {
+    font-size: 1.5rem;
+  }
+  
+  .avg-score {
+    font-size: 1.5rem;
+  }
+  
+  .blog-card {
+    width: 95%;
+  }
+}
+
+/* Extra small screens (max-width: 320px) */
+@media (max-width: 320px) {
+  .hero h1 {
+    font-size: 1.5rem;
+  }
+  
+  .navbar .logo {
+    font-size: 1.2rem;
+  }
+  
+  .btn {
+    padding: 10px 20px;
+    font-size: 0.9rem;
+  }
+  
+  .star {
+    font-size: 1.2rem;
+  }
 }
 /* ========================
    Core Services (Flip Cards)
@@ -1213,25 +1460,7 @@ body {
   transform: translateY(-1px);
 }
 
-@media (max-width: 768px) {
-  #questionForm {
-    flex-direction: column;
-  }
-  
-  #usernameInput {
-    flex: 1;
-  }
-  
-  .question-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 5px;
-  }
-  
-  .user-actions {
-    justify-content: center;
-  }
-}
+
 
 /* Reviews Section */
 .reviews-section {
@@ -1430,36 +1659,7 @@ body {
   font-size: 1rem;
 }
 
-/* Mobile Responsiveness */
-@media (max-width: 768px) {
-  .reviews-summary {
-    flex-direction: column;
-    gap: 20px;
-    text-align: center;
-  }
-  
-  .rating-display {
-    justify-content: center;
-  }
-  
-  .rating-input {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
-  }
-  
-  .review-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
-  }
-  
-  .reviewer-info {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 5px;
-  }
-}
+
 
 /* WhatsApp Floating Button */
 .whatsapp-float {
