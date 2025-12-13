@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mobile-Responsive Reviews</title>
+  <style>
+    /* Essential Mobile Fixes */
+    * {
+      box-sizing: border-box;
+    }
+    
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      overflow-x: hidden; /* Prevent horizontal scroll */
+    }
+    
+    .container {
+      max-width: 100%;
+      padding: 15px;
+      margin: 0 auto;
+    }
+    
+    /* Reviews Section */
+    .reviews-section {
+      width: 100%;
+      padding: 20px 15px;
+    }
+    
+    /* Summary Section */
+    .reviews-summary {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      background: #f8f9fc;
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+    
+    .average-rating {
+      flex: 1;
+      min-width: 150px;
+      text-align: center;
+    }
+    
+    .sort-controls {
+      flex: 1;
+      min-width: 120px;
+    }
+    
+    /* Form Section */
+    .submit-review {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    
+    .review-form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    
+    .form-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    
+    .form-input {
+      flex: 1;
+      min-width: 200px;
+      padding: 12px;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      font-size: 16px; /* Prevents zoom on iOS */
+    }
+    
+    /* Star Rating */
+    .star-rating {
+      display: flex;
+      gap: 5px;
+      justify-content: center;
+    }
+    
+    .star {
+      font-size: 2rem;
+      color: #ddd;
+      cursor: pointer;
+      user-select: none;
+    }
+    
+    .star.active {
+      color: #ffc107;
+    }
+    
+    /* Reviews Display */
+    .reviews-list {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    
+    .review-item {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      width: 100%;
+    }
+    
+    .review-header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      gap: 10px;
+    }
+    
+    .reviewer-name {
+      font-weight: bold;
+      color: #333;
+    }
+    
+    .review-rating {
+      color: #ffc107;
+      font-size: 1.2rem;
+    }
+    
+    .review-date {
+      color: #666;
+      font-size: 0.9rem;
+    }
+    
+    .review-comment {
+      line-height: 1.5;
+      color: #555;
+    }
+    
+    .submit-btn {
+      padding: 12px 24px;
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      width: 100%;
+    }
+    
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+      .reviews-summary {
+        flex-direction: column;
+        text-align: center;
+      }
+      
+      .form-row {
+        flex-direction: column;
+      }
+      
+      .form-input {
+        min-width: auto;
+        width: 100%;
+      }
+      
+      .review-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      
+      .star {
+        font-size: 1.5rem;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .container {
+        padding: 10px;
+      }
+      
+      .reviews-section {
+        padding: 15px 10px;
+      }
+      
+      .submit-review,
+      .review-item {
+        padding: 15px;
+      }
+      
+      .star {
+        font-size: 1.3rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="reviews-section">
+      <h2>⭐ Customer Reviews</h2>
+      
+      <!-- Summary -->
+      <div class="reviews-summary">
+        <div class="average-rating">
+          <div style="font-size: 2rem; font-weight: bold; color: #007bff;">4.8</div>
+          <div style="color: #ffc107; font-size: 1.2rem;">★★★★★</div>
+          <div>Based on 25 reviews</div>
+        </div>
+        <div class="sort-controls">
+          <label>Sort by:</label>
+          <select style="padding: 8px; width: 100%; margin-top: 5px;">
+            <option>Latest</option>
+            <option>Highest Rating</option>
+          </select>
+        </div>
+      </div>
+      
+      <!-- Submit Form -->
+      <div class="submit-review">
+        <h3>Write a Review</h3>
+        <form class="review-form">
+          <div class="form-row">
+            <input type="text" class="form-input" placeholder="Your name (optional)">
+          </div>
+          
+          <div style="text-align: center;">
+            <label>Rating:</label>
+            <div class="star-rating">
+              <span class="star" onclick="setRating(1)">★</span>
+              <span class="star" onclick="setRating(2)">★</span>
+              <span class="star" onclick="setRating(3)">★</span>
+              <span class="star" onclick="setRating(4)">★</span>
+              <span class="star" onclick="setRating(5)">★</span>
+            </div>
+          </div>
+          
+          <textarea class="form-input" placeholder="Write your review..." rows="4" style="resize: vertical;"></textarea>
+          
+          <button type="submit" class="submit-btn">Submit Review</button>
+        </form>
+      </div>
+      
+      <!-- Reviews List -->
+      <div class="reviews-list">
+        <div class="review-item">
+          <div class="review-header">
+            <span class="reviewer-name">Sarah Johnson</span>
+            <span class="review-rating">★★★★★</span>
+            <span class="review-date">Jan 15, 2025</span>
+          </div>
+          <div class="review-comment">Excellent service! They helped me complete my nursing thesis on time. Highly professional and knowledgeable team.</div>
+        </div>
+        
+        <div class="review-item">
+          <div class="review-header">
+            <span class="reviewer-name">Mike Chen</span>
+            <span class="review-rating">★★★★☆</span>
+            <span class="review-date">Jan 14, 2025</span>
+          </div>
+          <div class="review-comment">Very good support for assignments. Quick response and quality work.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    let selectedRating = 0;
+    
+    function setRating(rating) {
+      selectedRating = rating;
+      const stars = document.querySelectorAll('.star');
+      stars.forEach((star, index) => {
+        star.classList.toggle('active', index < rating);
+      });
+    }
+    
+    // Prevent horizontal scroll
+    document.addEventListener('DOMContentLoaded', function() {
+      document.body.style.overflowX = 'hidden';
+    });
+  </script>
+</body>
+</html>
