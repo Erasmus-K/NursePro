@@ -239,6 +239,7 @@ document.addEventListener('DOMContentLoaded', () => {
   createDots();
   optimizeImages();
   loadQuestions();
+  initializeContact();
   
   // Q&A form handler
   const questionForm = document.getElementById('questionForm');
@@ -253,7 +254,7 @@ document.addEventListener('DOMContentLoaded', () => {
         addQuestion(questionInput.value.trim(), username);
         questionInput.value = '';
         usernameInput.value = '';
-        alert('Question submitted! We\'ll respond soon.');
+        showNotification('Question submitted! We\'ll respond soon.', 'success');
       }
     });
   }
@@ -288,3 +289,170 @@ document.addEventListener('DOMContentLoaded', () => {
     observer.observe(section);
   });
 });
+
+// Contact Form Functionality
+function initializeContact() {
+  const contactForm = document.getElementById('contactForm');
+  if (contactForm) {
+    contactForm.addEventListener('submit', handleContactSubmit);
+  }
+}
+
+function handleContactSubmit(e) {
+  e.preventDefault();
+  
+  const formData = {
+    name: document.getElementById('contactName').value.trim(),
+    email: document.getElementById('contactEmail').value.trim(),
+    phone: document.getElementById('contactPhone').value.trim(),
+    service: document.getElementById('serviceType').value,
+    message: document.getElementById('contactMessage').value.trim(),
+    urgency: document.querySelector('input[name="urgency"]:checked')?.value
+  };
+  
+  // Validate form
+  if (!validateContactForm(formData)) {
+    return;
+  }
+  
+  // Show loading state
+  const submitBtn = document.querySelector('.btn-submit');
+  const originalText = submitBtn.innerHTML;
+  submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+  submitBtn.disabled = true;
+  
+  // Simulate form submission (replace with actual API call)
+  setTimeout(() => {
+    // Reset form
+    document.getElementById('contactForm').reset();
+    
+    // Reset button
+    submitBtn.innerHTML = originalText;
+    submitBtn.disabled = false;
+    
+    // Show success message
+    showNotification('Message sent successfully! We\'ll get back to you within 2 hours.', 'success');
+    
+    // Optional: Send to WhatsApp
+    const whatsappMessage = createWhatsAppMessage(formData);
+    const whatsappUrl = `https://wa.me/12058665269?text=${encodeURIComponent(whatsappMessage)}`;
+    
+    // Ask user if they want to continue on WhatsApp
+    setTimeout(() => {
+      if (confirm('Would you like to continue this conversation on WhatsApp for faster response?')) {
+        window.open(whatsappUrl, '_blank');
+      }
+    }, 2000);
+    
+  }, 2000);
+}
+
+function validateContactForm(data) {
+  const errors = [];
+  
+  if (!data.name) errors.push('Name is required');
+  if (!data.email) errors.push('Email is required');
+  if (!isValidEmail(data.email)) errors.push('Please enter a valid email');
+  if (!data.service) errors.push('Please select a service');
+  if (!data.message) errors.push('Message is required');
+  
+  if (errors.length > 0) {
+    showNotification(errors.join('. '), 'error');
+    return false;
+  }
+  
+  return true;
+}
+
+function isValidEmail(email) {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+}
+
+function createWhatsAppMessage(data) {
+  return `Hi! I'm interested in your services.
+
+*Name:* ${data.name}
+*Email:* ${data.email}
+*Phone:* ${data.phone || 'Not provided'}
+*Service:* ${data.service}
+*Urgency:* ${data.urgency || 'Not specified'}
+
+*Message:*
+${data.message}
+
+Please get back to me soon. Thank you!`;
+}
+
+function showNotification(message, type = 'info') {
+  // Remove existing notifications
+  const existing = document.querySelector('.notification');
+  if (existing) existing.remove();
+  
+  const notification = document.createElement('div');
+  notification.className = `notification ${type}`;
+  notification.innerHTML = `
+    <div class="notification-content">
+      <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}"></i>
+      <span>${message}</span>
+      <button class="notification-close" onclick="this.parentElement.parentElement.remove()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+  `;
+  
+  // Add styles
+  notification.style.cssText = `
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: ${type === 'success' ? '#28a745' : type === 'error' ? '#dc3545' : '#17a2b8'};
+    color: white;
+    padding: 15px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    z-index: 1000;
+    animation: slideInRight 0.3s ease;
+    max-width: 400px;
+  `;
+  
+  document.body.appendChild(notification);
+  
+  // Auto remove after 5 seconds
+  setTimeout(() => {
+    if (notification.parentElement) {
+      notification.style.animation = 'slideOutRight 0.3s ease';
+      setTimeout(() => notification.remove(), 300);
+    }
+  }, 5000);
+}
+
+// Add CSS animations for notifications
+const notificationStyles = document.createElement('style');
+notificationStyles.textContent = `
+  @keyframes slideInRight {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+  }
+  
+  @keyframes slideOutRight {
+    from { transform: translateX(0); opacity: 1; }
+    to { transform: translateX(100%); opacity: 0; }
+  }
+  
+  .notification-content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .notification-close {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 0;
+    margin-left: auto;
+  }
+`;
+document.head.appendChild(notificationStyles);
