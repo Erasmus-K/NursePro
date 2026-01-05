@@ -1,72 +1,87 @@
-// Q&A Data Structure
+// Q&A Database - API-based data access layer
 const qaDatabase = {
-  questions: [
-    {
-      id: 1,
-      questionText: "How long does it take to complete a nursing assignment?",
-      answerText: "Typically 2-5 days depending on complexity, length, and urgency level.",
-      username: "Sarah_RN",
-      date: "2025-01-15",
-      approved: true
-    },
-    {
-      id: 2,
-      questionText: "Do you help with NCLEX exam preparation?",
-      answerText: "Yes, we provide comprehensive NCLEX prep including practice questions and study guides.",
-      username: "Mike_Student",
-      date: "2025-01-14",
-      approved: true
-    },
-    {
-      id: 3,
-      questionText: "What's your refund policy?",
-      answerText: "We offer full refunds if you're not satisfied with our service quality.",
-      username: "Jennifer_K",
-      date: "2025-01-13",
-      approved: true
-    },
-    {
-      id: 4,
-      questionText: "Can you help with clinical case studies?",
-      answerText: "Absolutely! We specialize in nursing case studies and care plans.",
-      username: "Alex_Nurse",
-      date: "2025-01-12",
-      approved: false
-    }
-  ],
-
   // Add new question
-  addQuestion(questionText, username) {
-    const newQuestion = {
-      id: this.questions.length + 1,
-      questionText: questionText,
-      answerText: "",
-      username: username,
-      date: new Date().toISOString().split('T')[0],
-      approved: false
-    };
-    this.questions.push(newQuestion);
-    return newQuestion;
+  async addQuestion(questionText, username) {
+    try {
+      const response = await fetch('/api/questions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ question: questionText, username })
+      });
+      const result = await response.json();
+      return {
+        id: result.id,
+        questionText: result.question,
+        answerText: result.answer || '',
+        username: result.username,
+        date: result.date,
+        approved: result.approved || false
+      };
+    } catch (error) {
+      console.error('Error adding question:', error);
+      return null;
+    }
   },
 
   // Get approved questions only
-  getApprovedQuestions() {
-    return this.questions.filter(q => q.approved);
+  async getApprovedQuestions() {
+    try {
+      const response = await fetch('/api/questions/approved');
+      const data = await response.json();
+      return data.map(q => ({
+        id: q.id,
+        questionText: q.question,
+        answerText: q.answer,
+        username: q.username,
+        date: q.date,
+        approved: q.approved
+      }));
+    } catch (error) {
+      console.error('Error fetching approved questions:', error);
+      return [];
+    }
   },
 
   // Get pending questions (for admin)
-  getPendingQuestions() {
-    return this.questions.filter(q => !q.approved);
+  async getPendingQuestions() {
+    try {
+      const response = await fetch('/api/questions/pending');
+      const data = await response.json();
+      return data.map(q => ({
+        id: q.id,
+        questionText: q.question,
+        answerText: q.answer || '',
+        username: q.username,
+        date: q.date,
+        approved: q.approved
+      }));
+    } catch (error) {
+      console.error('Error fetching pending questions:', error);
+      return [];
+    }
   },
 
   // Approve question and add answer
-  approveQuestion(id, answerText) {
-    const question = this.questions.find(q => q.id === id);
-    if (question) {
-      question.approved = true;
-      question.answerText = answerText;
+  async approveQuestion(id, answerText) {
+    try {
+      const response = await fetch(`/api/questions/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ answer: answerText, approved: true })
+      });
+      const result = await response.json();
+      return {
+        id: result.id,
+        questionText: result.question,
+        answerText: result.answer,
+        username: result.username,
+        date: result.date,
+        approved: result.approved
+      };
+    } catch (error) {
+      console.error('Error approving question:', error);
+      return null;
     }
-    return question;
   }
 };
 
