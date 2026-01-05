@@ -178,21 +178,169 @@
     }
     
     @media (max-width: 768px) {
+      .admin-container {
+        padding: 10px;
+      }
+      
+      .admin-header {
+        padding: 20px 15px;
+        margin-bottom: 20px;
+      }
+      
+      .admin-header h1 {
+        font-size: 1.5rem;
+      }
+      
       .admin-tabs {
         flex-direction: column;
+        gap: 8px;
+      }
+      
+      .tab-btn {
+        padding: 15px 20px;
+        font-size: 0.9rem;
+        text-align: center;
+        min-height: 48px;
+      }
+      
+      .tab-content {
+        padding: 20px 15px;
+      }
+      
+      .stats-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+        margin-bottom: 20px;
+      }
+      
+      .stat-card {
+        padding: 20px 15px;
+      }
+      
+      .stat-number {
+        font-size: 2rem;
       }
       
       .search-filter {
         flex-direction: column;
+        gap: 10px;
+      }
+      
+      .search-filter input,
+      .search-filter select {
+        width: 100%;
+        box-sizing: border-box;
+        min-height: 44px;
+      }
+      
+      .export-btn {
+        width: 100%;
+        margin-left: 0;
+        margin-top: 10px;
+        min-height: 44px;
+      }
+      
+      /* Table wrapper for horizontal scroll */
+      .table-wrapper {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        margin: 0 -15px;
+        padding: 0 15px;
       }
       
       .admin-table {
-        font-size: 0.9rem;
+        min-width: 600px;
+        font-size: 0.85rem;
       }
       
       .admin-table th,
       .admin-table td {
-        padding: 8px;
+        padding: 10px 8px;
+        white-space: nowrap;
+      }
+      
+      .admin-table td:nth-child(4),
+      .admin-table td:nth-child(3) {
+        max-width: 150px;
+        white-space: normal;
+        word-wrap: break-word;
+      }
+      
+      .action-btn {
+        padding: 8px 12px;
+        font-size: 0.75rem;
+        margin: 2px 1px;
+        min-height: 36px;
+        min-width: 36px;
+      }
+      
+      .action-btn i {
+        font-size: 0.8rem;
+      }
+      
+      /* Stack header elements on mobile */
+      .tab-content > div:first-child {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 15px;
+      }
+      
+      /* Dashboard grid adjustments */
+      .tab-content > div[style*="grid-template-columns"] {
+        grid-template-columns: 1fr !important;
+        gap: 20px !important;
+      }
+      
+      /* Modal adjustments */
+      #answerModal > div {
+        width: 95% !important;
+        max-width: none !important;
+        padding: 20px !important;
+      }
+      
+      #answerText {
+        height: 120px !important;
+      }
+      
+      /* Status badges */
+      .status-badge {
+        font-size: 0.7rem;
+        padding: 3px 6px;
+      }
+      
+      /* Notification adjustments */
+      .notification-mobile {
+        position: fixed !important;
+        top: 10px !important;
+        left: 10px !important;
+        right: 10px !important;
+        width: auto !important;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .admin-table {
+        font-size: 0.8rem;
+      }
+      
+      .admin-table th,
+      .admin-table td {
+        padding: 8px 6px;
+      }
+      
+      .action-btn {
+        padding: 6px 8px;
+        font-size: 0.7rem;
+        margin: 1px;
+      }
+      
+      .tab-btn {
+        padding: 12px 15px;
+        font-size: 0.85rem;
       }
     }
   </style>
@@ -284,20 +432,22 @@
         </select>
       </div>
       
-      <table class="admin-table">
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Name</th>
-            <th>Rating</th>
-            <th>Comment</th>
-            <th>Status</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody id="reviewsTableBody">
-        </tbody>
-      </table>
+      <div class="table-wrapper">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Name</th>
+              <th>Rating</th>
+              <th>Comment</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="reviewsTableBody">
+          </tbody>
+        </table>
+      </div>
     </div>
     
     <!-- Questions Tab -->
@@ -319,20 +469,22 @@
         </select>
       </div>
       
-      <table class="admin-table">
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Username</th>
-            <th>Question</th>
-            <th>Answer</th>
-            <th>Status</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody id="questionsTableBody">
-        </tbody>
-      </table>
+      <div class="table-wrapper">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Username</th>
+              <th>Question</th>
+              <th>Answer</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="questionsTableBody">
+          </tbody>
+        </table>
+      </div>
     </div>
     
     <!-- Contact Messages Tab -->
@@ -811,10 +963,10 @@
     // Notification system
     function showNotification(message, type = 'info') {
       const notification = document.createElement('div');
+      const isMobile = window.innerWidth <= 768;
       notification.style.cssText = `
         position: fixed;
-        top: 20px;
-        right: 20px;
+        ${isMobile ? 'top: 10px; left: 10px; right: 10px;' : 'top: 20px; right: 20px;'}
         background: ${type === 'success' ? '#28a745' : type === 'error' ? '#dc3545' : '#17a2b8'};
         color: white;
         padding: 15px 20px;
